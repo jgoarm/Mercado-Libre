@@ -59,5 +59,8 @@ def isMutant (dna) :
 
     return False
 
-dna = ['ATGCGA','CAGTGC','TTATGT','AGAAGG','CCCCTA','TCACTG']
+dna = ["ATGCGA","CAGTGC","TTATTT","AGACGG","GCGCTA","TCACTG"]
+#dna = ["ATCCCC","CAGTGC","TTTTTT","AGACGG","GCGCTA","TCACTG"]
+#dna = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+#dna = ["ATCACC","CAGTGC","TTGTTT","AGACGG","GCGCTA","TCACTG"]
 print(isMutant (dna))
