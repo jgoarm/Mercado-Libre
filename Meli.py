@@ -4,12 +4,12 @@ def isMutant (dna) :
     count = 0
     n = len(dna)
 
-    dna_matrix =[]
+    dna_matrix = []
     for row in dna :
         row = list(row)
         dna_matrix.append(row)
 
-    dna_mirror =[]
+    dna_mirror = []
     for row in dna_matrix :
         row = row[::-1]
         dna_mirror.append(row)
@@ -63,4 +63,5 @@ dna = ["ATGCGA","CAGTGC","TTATTT","AGACGG","GCGCTA","TCACTG"]
 #dna = ["ATCCCC","CAGTGC","TTTTTT","AGACGG","GCGCTA","TCACTG"]
 #dna = ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
 #dna = ["ATCACC","CAGTGC","TTGTTT","AGACGG","GCGCTA","TCACTG"]
+#dna = ["ATGCGA","CAGTGC","TTATGT","AGACTG","GCGCTA","TCACTG"]
 print(isMutant (dna))

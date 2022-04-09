@@ -38,14 +38,17 @@ def getStats():
             response = table.scan(ExclusiveStarKey=response['LastEvaluatedKey'])
             result.extend(response['Items'])
 
-        dna_count = len(result)
+        count_human_dna = len([elem for elem in result if elem['isMutant'] == False])
+        count_mutant_dna = len(result) - count_human_dna
+        ratio = round(count_mutant_dna / count_human_dna, 2)
         body = {
-            'dna_count': dna_count,
-            'DNAs': result
+            'count_mutant_dna': count_mutant_dna,
+            'count_human_dna': count_human_dna,
+            'ratio': ratio
         }
         return buildResponse(200, body)
     except:
-        logger.exception('Do your custom error handling')
+        logger.exception('Something went wrong while scanning the database')
 
 """def getStats(DNA_ID):
     try:
@@ -62,13 +65,15 @@ def getStats():
         logger.exception('Do your custom error handling')"""
 
 def saveADN(requestBody):
-    requestBody['DNA_ID'] = "1"
-    requestBody['isMutant'] = isMutant(requestBody['DNA'])
     try:
+        response = table.scan()
+        result = response['Items']
+        requestBody['DNA_ID'] = str(round(len(result) + 1, 2))
+        requestBody['isMutant'] = isMutant(requestBody['DNA'])
         table.put_item(Item=requestBody)
         body = {
-            'Operation': 'SAVE',
-            'Message': 'SUCCESS',
+            #'Operation': 'SAVE',
+            #'Message': 'SUCCESS',
             'Item': requestBody
         }
         if requestBody['isMutant'] == True:
@@ -76,18 +81,17 @@ def saveADN(requestBody):
         else:
             return buildResponse(403, body)
     except:
-        logger.exception('Do your custom error handling')
+        logger.exception('Something went wrong while checking the ADN and saving it in the database')
 
-def buildResponse(statusCode, body=None):
+def buildResponse(statusCode, body):
     response = {
         'statusCode': statusCode,
         'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json'
+            #'Access-Control-Allow-Origin': '*'
         }
     }
-    if body is not None:
-        response['body'] = json.dumps(body)
+    response['body'] = json.dumps(body)
     return response
 
 def isMutant (dna) :
